@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/home/rivez/Документы/1. Семинар - 20130921 - Robocode/robocode-1.8.2.0-setup/libs/robocode.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/home/rivez/Документы/1.%20Семинар%20-%2020130921%20-%20Robocode/robocode-1.8.2.0-setup/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
