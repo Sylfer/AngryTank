@@ -25,18 +25,11 @@ public abstract class SuperVisorState {
 	* Протоколирование для объекта -- начало протоколирования
 	*/
 	private static void doStartLogging(int aEvent, AngryTankJr aRobot) {
-	if (Constants.OBJECTS_LOGGING)
-	Logger.log("Для объекта 'Супервизор':");
-	if (Constants.A0_BEGIN_LOGGING)
-	Logger.logBegin(Constants.SUPERVISOR_AUTOMATE_NAME, aRobot.getCurrentState().getName(),
-	aEvent);
 	};
 	/**
 	* Протоколирование для объекта -- конец протоколирования
 	*/
 	private static void doEndLoggint(int aEvent, AngryTankJr aRobot) {
-	if (Constants.A0_END_LOGGING)
-	Logger.logEnd(Constants.SUPERVISOR_AUTOMATE_NAME, aRobot.getCurrentState().getName());
 	};	
 	
 	/** Метод, обрабатывающий события. Каждый из подклассов
@@ -64,16 +57,12 @@ public abstract class SuperVisorState {
 	* Сюда также включено все протоколирование
 	*/
 	public static void processIncomingEvent(int aEvent, AngryTankJr aRobot) {
-		doStartLogging(aEvent, aRobot);
 		aRobot.getCurrentState().processEvent(aRobot, aEvent);
-		doEndLoggint(aEvent, aRobot);
 	}
 	/**
 	* Смена состояния автомата, управляющего объектом
 	*/
 	public static void changeParentState(AngryTankJr aRobot, SuperVisorState aState) {
-		Logger.logStateChange(Constants.SUPERVISOR_AUTOMATE_NAME, aState.getName(),
-		aRobot.getCurrentState().getName());
 		aRobot.setCurrentState(aState);
 	}
 	/*

@@ -126,17 +126,14 @@ public class AngryTankJr extends AdvancedRobot {
 		SuperVisorState.processIncomingEvent(Constants.EVENT_ROUND_START, this);
 
 		while (true) {
-			_currentTime = getTime();
-			Logger.log("--------- " + _currentTime + " ---------");
 			// Обработать очередь событий
 			check_events();
 			
 			// Вызвать автомат A0 с событием "Начало шага"
 			SuperVisorState.processIncomingEvent(Constants.EVENT_STEP_START, this);
+			
 			getGunner().beginTurn(); // Передать событие "Начало шага" объекту "Стрелок"
 			getRadar().beginTurn(); // Передать событие "Начало шага" объекту "Радар"
-			//getMovement().move(enemyX, enemyY);
-			//getDriver().beginTurn(); // Передать событие "Начало шага" объекту "Водитель"
 			endTurnEvent();
 			
 			// Обработать событие "Конец шага"
@@ -144,6 +141,18 @@ public class AngryTankJr extends AdvancedRobot {
 		}
 	}
 	
+	private static double angleTo(double baseX, double baseY, double x, double y) {
+        double theta = Math.asin((y - baseY) / Point2D.distance(x, y, baseX, baseY)) - Math.PI / 2;
+        if (x >= baseX && theta < 0) {
+            theta = -theta;
+        }
+        return (theta %= Math.PI * 2) >= 0 ? theta : (theta + Math.PI * 2);
+    }	
+	
+	private double getGunTurn() {
+	       // вычисления тривиальны: считаем на какой угол надо повернуть пушку, чтобы она смотрела прямо на противника:
+	       return Utils.normalRelativeAngle(angleTo(getX(), getY(), enemyX, enemyY) - getGunHeadingRadians());
+	}	
 	
 	
 	/** Обработка события среды Robocode “Попадание в цель” */
@@ -160,13 +169,9 @@ public class AngryTankJr extends AdvancedRobot {
 	}
 	/** Обработка события среды Robocode “Обновление цели ” */
 	public void onScannedRobot(ScannedRobotEvent first_e) {
+		
 		_events.add(first_e);
 		
-		/*final double alphaToEnemy = getHeadingRadians() + first_e.getBearingRadians();
-		
-		enemyX = getX() + Math.sin(alphaToEnemy) * first_e.getDistance();
-	    enemyY = getY() + Math.cos(alphaToEnemy) * first_e.getDistance();*/
-
         _myLocation = new Point2D.Double(getX(), getY());
         
         double lateralVelocity = getVelocity()*Math.sin(first_e.getBearingRadians());
@@ -259,7 +264,6 @@ public class AngryTankJr extends AdvancedRobot {
 	}
 	/** Конструктор, устанавливающий объект-logger и переводящий автомат в начальное состояние */
 	public AngryTankJr() {
-		Logger._out = out;
 		SuperVisorState.reset(this);
 	}
 	/** Создание частей танка – “Радар”, ”Водитель”, ”Стрелок”,” Cписок целей”*/
@@ -296,10 +300,7 @@ public class AngryTankJr extends AdvancedRobot {
 	Реализация выходных воздействий
 	*/
 	/** z10_0 : Инициализация при запуске */
-	protected void z10_0_initializeAtStart() {
-		if (Constants.OUTPUTS_LOGGING)
-			Logger.logOutput("z10_0", "Инициализация при запуске");
-		
+	protected void z10_0_initializeAtStart() {		
 		setUpPriorities();
 		setUpParameters();
 		createDevices();
@@ -307,11 +308,6 @@ public class AngryTankJr extends AdvancedRobot {
 	}
 	/** z10_1 : Инициализация в начале раунда*/
 	protected void z10_1_initializeAtNewRound() {
-		if (Constants.OUTPUTS_LOGGING)
-			Logger.logOutput("z10_1", "Инициализация в начале раунда");
-		Logger.log("***");
-		Logger.log("*** Раунд " + (getRoundNum() + 1));
-		Logger.log("***");
 		clearAllEvents();
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
@@ -323,20 +319,13 @@ public class AngryTankJr extends AdvancedRobot {
 		if (_events != null) _events.clear();
 	}
 	/** z10_2 : Инициализация в начале шага */
-	protected void z10_2_requestInputParametersAtNewStep() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z10_2", "Инициализация в начале шага");
-		}
-		
+	protected void z10_2_requestInputParametersAtNewStep() {		
 		_aliveRobotsCount = getOthers();
 		_currentEnegy = getEnergy();
 		getTargets().beginTurn();
 	}
 	/** z20 : Вывод статистики по раунду */
 	protected void z20_printRoundStatistics() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z20", "Вывести статистику раунда");
-		}
 		showStatistics();
 	}
 	/*
@@ -385,10 +374,6 @@ public class AngryTankJr extends AdvancedRobot {
 		private void showStatistics() {
 			long shots = _hits + _misses;
 			getTargets().showStatistics();
-			Logger.log("Выстрелов: " + shots + ", попаданий: " + _hits + ", промахов: " + _misses);
-			Logger.log("Меткость: " + (double) _hits / shots);
-			Logger.log("Попали в нас: " + _hittesByBullet);
-			Logger.log("Столкновений со стенами: " + _wallCollisions);
 		}
 		/** Расчитать скорость выстрела заданной мощности */
 		public static double getBulletSpeed(double firepower) {

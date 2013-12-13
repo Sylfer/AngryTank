@@ -39,23 +39,12 @@ public abstract class DriverState {
 	}
 	/** Протоколирование для объекта -- начало протоколирования */
 	private static void doStartLogging(int aEvent, Driver aDriver) {
-		if (Constants.OBJECTS_LOGGING)
-			Logger.log("Для объекта 'Водитель':");
-		if (Constants.A3_BEGIN_LOGGING)
-			Logger.logBegin(Constants.DRIVER_AUTOMATE_NAME, aDriver.getCurrentState().getName(), aEvent);
 	}
 	/** Протоколирование для объекта -- конец протоколирования */
 	private static void doEndLogging(int aEvent, Driver aDriver) {
-		if (Constants.A3_END_LOGGING)
-			Logger.logEnd(Constants.DRIVER_AUTOMATE_NAME, aDriver.getCurrentState().getName());
 	}
 	/** Смена состояния автомата, управляющего объектом */
 	private static void changeState(DriverState aNewState, Driver aDriver) {
-		if (Constants.A3_TRANS_LOGGING)
-			Logger.logStateChange(Constants.DRIVER_AUTOMATE_NAME, aNewState.getName(),
-			aDriver.getCurrentState().getName());
-			aDriver.setCurrentState(aNewState);
-			aNewState.onEnter(aDriver);
 	}
 	/**
 	* Статический метод, осуществляющий обработку события aEvent объектом aDriver.

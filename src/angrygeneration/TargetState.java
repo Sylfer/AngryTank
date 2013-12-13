@@ -43,25 +43,16 @@ public abstract class TargetState {
 	* Протоколирование для объекта -- начало протоколирования
 	*/
 	private static void doStartLogging(int aEvent, Target aTarget) {
-		if (Constants.OBJECTS_LOGGING)
-			Logger.log("Для объекта 'Цель' (" + aTarget.getName() + "):");
-		if (Constants.A5_BEGIN_LOGGING)
-			Logger.logBegin(Constants.TARGET_AUTOMATE_NAME, aTarget.getCurrentState().getName(), aEvent);
 	}
 	/**
 	* Протоколирование для объекта -- конец протоколирования
 	*/
 	private static void doEndLogging(int aEvent, Target aTarget) {
-		if (Constants.A5_END_LOGGING)
-			Logger.logEnd(Constants.TARGET_AUTOMATE_NAME, aTarget.getCurrentState().getName());
 	}
 	/**
 	* Смена состояния автомата, управляющего объектом
 	*/
 	private static void changeParentState(TargetState aNewState, Target aTarget) {
-		if (Constants.A5_TRANS_LOGGING)
-			Logger.logStateChange(Constants.TARGET_AUTOMATE_NAME, aNewState.getName(),
-					aTarget.getCurrentState().getName());
 		aTarget.setCurrentState(aNewState);
 		aNewState.onEnter(aTarget);
 	}

@@ -90,31 +90,21 @@ public class Gunner {
 	/** x20 : Пушка скоро (в течение трех ходов) охладится */
 	public boolean x20_gunIsExpectedToBeCold() {
 		boolean result = _curGunHeat / _gunHeatDecrement <= 3;
-		if (Constants.INPUTS_LOGGING) {
-			Logger.logInput("x20", "Пушка скоро охладится", result);
-		}
 		return result;
 	}
 	/** x21 : Пушка охладилась */
 	public boolean x21_gunIsCold() {
 		boolean result = _curGunHeat <= 0;
-		if (Constants.INPUTS_LOGGING) {
-			Logger.logInput("x21", "Пушка охладилась", result);
-		}
 		return result;
 	}
 	/** x22 : До конца охлаждения пушки меньше двух ходов */
 	public boolean x22_gunWillBeColdWithinTwoSteps() {
 		boolean result = _curGunHeat / _gunHeatDecrement <= 1;
-		if (Constants.INPUTS_LOGGING)
-			Logger.logInput("x22", "До конца охлаждения пушки меньше двух ходов", result);
 		return result;
 	}
 	/** x25 : Цель выбрана */
 	public boolean x25_targetIsCaptured() {
 		boolean result = _curTarget != null;
-		if (Constants.INPUTS_LOGGING)
-			Logger.logInput("x25", "Цель выбрана", result);
 		return result;
 	}
 	/** x26 : Цель потеряна */
@@ -122,8 +112,6 @@ public class Gunner {
 		boolean result = true;
 		if (_curTarget != null)
 			result = !_curTarget.isTracked();
-		if (Constants.INPUTS_LOGGING)
-			Logger.logInput("x26", "Цель потеряна", result);
 		return result;
 	}
 	/** x30 : До конца поворота пушки меньше двух ходов */
@@ -135,8 +123,6 @@ public class Gunner {
 		+ _robot.getDriver().getTurningSpeed();
 		
 		result = Math.abs(gun_to_go / gun_turning_speed) <= 1;
-		if (Constants.INPUTS_LOGGING)
-			Logger.logInput("x30", "До конца поворота пушки меньше двух ходов", result);
 		return result;
 	}
 	/** x50 : Наводка правильная*/
@@ -144,8 +130,6 @@ public class Gunner {
 		boolean result = true;
 		double gun_to_go = AngryTankJr.getAngleDiff(_curHeading, _curAim.getAngle());
 		result = Math.abs(gun_to_go) < AngryTankJr.PRECISION;
-		if (Constants.INPUTS_LOGGING)
-			Logger.logInput("x50", "Наводка правильная", result);
 		return result;
 	}
 	/*
@@ -153,18 +137,12 @@ public class Gunner {
 	*/
 	/** z30 : Выбрать цель*/
 	public void z30_selectTarget() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z30", "Выбрать цель");
-		}
 		_curTarget = _robot.getTargets().getClosestTarget(8);
 		if (_curTarget == null)
 			_curTarget = _robot.getTargets()._closestTarget;
 	}
 	/** z40 : Рассчитать мощность выстрела */
 	public void z40_calculateFirePower() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z40", "Рассчитать мощность выстрела");
-		}
 		double P = 0.25;
 		if (_robot._currentEnegy >= AngryTankJr.ENERGY_NORMAL_THRESHOLD) {
 			P = 0.2;
@@ -183,9 +161,6 @@ public class Gunner {
 	}
 	/** z50_0 : Рассчитать точное упреждение и направить пушку*/
 	public void z50_0_calculateFineForestallingAndTurnGun() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z50_0", "Рассчитать точное упреждение и направить пушку");
-		}
 		if (_curTarget != null) {
 			GeomVektor predicted_pos;
 			predicted_pos = _curTarget.calculateAveragePrediction(
@@ -196,9 +171,6 @@ public class Gunner {
 	}
 	/** z50_1 : Рассчитать приблизительное упреждение и направить пушку */
 	public void z50_1_calculateRoughForestallingAndTurnGun() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z50_1", "Рассчитать приблизительное упреждение и направить пушку");
-		}
 		if (_curTarget != null) {
 			GeomVektor predicted_pos;
 			predicted_pos = _curTarget.calculateRoughPrediction(
@@ -209,24 +181,15 @@ public class Gunner {
 	}
 	/** z60 : Выстрел */
 	public void z60_makeShot() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z60", "Выстрел");
-		}
 		_firepower = _curFirepower;
 	}
 	/** z70 : Сбросить историю маневрирования цели */
 	public void z70_dropTargetPathHistory() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z70", "Сбросить историю маневрирования цели");
-		}
 		if (_curTarget != null)
 			_curTarget.resetSpeedHistory();
 	}
 	/** z80 : Сбросить текущую цель */
 	public void z80_dropCurrentTarget() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z80", "Сбросить текущую цель");
-		}
 		_curTarget = null;
 	}
 }

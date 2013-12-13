@@ -105,9 +105,6 @@ public class Driver {
 		if (_robot.getTargets()._closestTarget != null) {
 			result = _robot.getTargets()._closestTarget._distance < 300;
 		}
-		if (Constants.INPUTS_LOGGING) {
-			Logger.logInput("x100", "Враг близко", result);
-		}
 		return result;
 	}
 	/** x105 : Проверка на близость к стене */
@@ -118,17 +115,11 @@ public class Driver {
 		|| _curX > _robot._battleFieldWidth - collision_delta
 		|| _curY < 0 + collision_delta
 		|| _curY > _robot._battleFieldHeight - collision_delta;
-		if (Constants.INPUTS_LOGGING) {
-			Logger.logInput("x105", "Стена близко", result);
-		}
 		return result;
 	}
 	/** x110 : Проверка на срабатывание таймера T110 */
 	public boolean x110_timeoutExpired() {
 		boolean result = _robot._currentTime >= _t110;
-		if (Constants.INPUTS_LOGGING) {
-			Logger.logInput("x110", "Сработал таймер T110", result);
-		}
 		return result;
 	}
 	/*
@@ -136,17 +127,11 @@ public class Driver {
 	*/
 	/** z200_0 : Инициализация движения по траектории 'Маятник' */
 	public void z200_0_initializePendulumTrajectory() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z200_0", "Инициализация движения по траектории 'Маятник'");
-		}
 		_robot.setMaxVelocity(10);
 		getDirection();
 	}
 	/** z200_1 : Прибавление случайной составляющей к траектории 'Маятник' */
 	public void z200_1_randomizePendulumTrajectory() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z200_1", "Добавить случайную составляющую к траектории 'Маятник'");
-		}
 		_direction.setCoords(_direction.getAngle(), 1);
 		double angle_diff = _robot.normalizeAngle(_direction.getAngle() +
 		(_robot._randomizer.nextBoolean() ? AngryTankJr.HALF_PI : -AngryTankJr.HALF_PI));
@@ -154,15 +139,10 @@ public class Driver {
 	}
 	/** z200_2 : Пересчет параметров при движении по траектории 'Маятник' */
 	public void z200_2_calculatePendulumTrajectory() {
-		if (Constants.OUTPUTS_LOGGING)
-			Logger.logOutput("z200_2", "Определить направление и скорость движения 'Маятник'");
 		calculate_movement_order(true);
 	}
 	/** z210_0 : Инициализация движения по траектории 'Дуга' */
 	public void z210_0_initializeArcTrajectory() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z210_0", "Инициализация движения по траектории 'Дуга'");
-		}
 		double TTT = _robot.getTargets()._closestTarget != null
 		? _robot.getTargets()._closestTarget._distance / 20.0 : 10;
 		TTT = TTT * (_robot._randomizer.nextDouble() * 0.5 + 0.8);
@@ -183,23 +163,14 @@ public class Driver {
 	}
 	/** z210_1 : Добавление случайной составляющей к траектории 'Дуга' */
 	public void z210_1_randomizeArcTrajectory() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z210_1", "Добавить случайную составляющую к траектории 'Дуга'");
-		}
 	}
 	/** z210_2 : Определиние направления и скорости движения 'Дуга' */
 	public void z210_2_calculateArcTrajectory() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z210_2", "Определить направление и скорость движения 'Дуга'");
-		}
 		calculate_movement_order(false);
 		_da = 0;
 	}
 	/** z220_0 : Инициализация движения по траектории 'Уклонение' */
 	public void z220_0_initializeDigressionTrajectory() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z220_0", "Инициализация движения по траектории 'Уклонение'");
-		}
 		_t110 = _robot._currentTime + 17;
 		getDirection();
 		_direction.setAngle(-AngryTankJr.HALF_PI * (_direction.getAngle() / Math.abs(_direction.getAngle())));
@@ -207,20 +178,13 @@ public class Driver {
 	}
 	/** z220_1 : Добавление случайной составляющей к траектории 'Уклонение' */
 	public void z220_1_randomizeDigressionTrajectory() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z220_1", "Добавить случайную составляющую к траектории 'Уклонение'");
-		}
 	}
 	/** z220_2 : Определение направления движения 'Уклонение' */
 	public void z220_2_calculateDigressionTrajectory() {
-		if (Constants.OUTPUTS_LOGGING)
-			Logger.logOutput("z220_2", "Определить направление движения 'Уклонение'");
 		calculate_movement_order(false);
 	}
 	/** z230_0 : Инициализация движения по траектории 'Останов' */
 	public void z230_0_initializeStopTrajectory() {
-		if (Constants.OUTPUTS_LOGGING)
-			Logger.logOutput("z230_0", "Инициализация движения по траектории 'Останов'");
 		double TTT = _robot.getTargets()._closestTarget != null
 				? _robot.getTargets()._closestTarget._distance / 20.0 : 10;
 		TTT = TTT * (_robot._randomizer.nextDouble() * 0.3 + 0.3);
@@ -230,9 +194,6 @@ public class Driver {
 	///////////////////////////////////////////////////////////////////////////
 	/** z240_0 : Инициализация движения по траектории 'Син' */
 	public void z240_0_initializeSinTrajectory() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z220_0", "Инициализация движения по траектории 'Син'");
-		}
 		
 		_t110 = _robot._currentTime + 17;
 		//getDirection();
@@ -244,14 +205,9 @@ public class Driver {
 	}
 	/** z240_1 : Добавление случайной составляющей к траектории 'Уклонение' */
 	public void z240_1_randomizeDigressionTrajectory() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z220_1", "Добавить случайную составляющую к траектории 'Уклонение'");
-		}
 	}
 	/** z240_2 : Определение направления движения 'Уклонение' */
 	public void z240_2_calculateDigressionTrajectory() {
-		if (Constants.OUTPUTS_LOGGING)
-			Logger.logOutput("z220_2", "Определить направление движения 'Уклонение'");
 		calculate_movement_order(false);
 	}
 

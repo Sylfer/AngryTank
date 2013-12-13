@@ -32,8 +32,6 @@ public abstract class GunnerState {
 	* Смена состояния автомата, управляющего объектом
 	*/
 	protected static void chageParentState(Gunner aGunMaster, GunnerState aNewState) {
-		Logger.logStateChange(Constants.GUNNER_AUTOMATE_NAME, aNewState.getName(),
-		aGunMaster.getState().getName());
 		aGunMaster.setState(aNewState);
 		aNewState.onEnter(aGunMaster);
 	}
@@ -50,25 +48,17 @@ public abstract class GunnerState {
 	* Сюда также включено все протоколирование
 	*/
 	public static void processIncomingEvent(int aEvent, Gunner aGunMaster) {
-		doStartLogging(aGunMaster, aEvent);
 		aGunMaster.getState().processEvent(aEvent, aGunMaster);
-		doEndLogging(aGunMaster);
 	}
 	/**
 	* Протоколирование для объекта -- конец протоколирования
 	*/
 	private static void doEndLogging(Gunner aGunMaster) {
-		if (Constants.A1_END_LOGGING)
-			Logger.logEnd(Constants.GUNNER_AUTOMATE_NAME, aGunMaster.getState().getName());
 	}
 	/**
 	* Протоколирование для объекта -- начало протоколирования
 	*/
 	private static void doStartLogging(Gunner aGunMaster, int aEvent) {
-		if (Constants.OBJECTS_LOGGING)
-			Logger.log("Для объекта 'Стрелок':");
-		if (Constants.A1_BEGIN_LOGGING)
-			Logger.logBegin(Constants.GUNNER_AUTOMATE_NAME, aGunMaster.getState().getName(), aEvent);
 	}
 	/*
 	Реализация состояний

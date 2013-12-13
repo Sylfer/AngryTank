@@ -61,17 +61,11 @@ public class Radar {
 	/* x70 : Цикл сканирования завершен */
 	public boolean x70_scanningIsComplete() {
 		boolean result = _robot.getTargets().scanCompleted();
-		if (Constants.INPUTS_LOGGING) {
-			Logger.logInput("x70", "Цикл сканирования завершен", result);
-		}
 		return result;
 	}
 	/* x80 : Пройденный радаром путь меньше 180 градусов */
 	public boolean x80_wholePathIsLesserThan180() {
 		boolean result = Math.abs(_radarPath) < Math.PI;
-		if (Constants.INPUTS_LOGGING) {
-			Logger.logInput("x80", "Пройденный радаром путь меньше 180 градусов", result);
-		}
 		return result;
 	}
 	/*
@@ -79,23 +73,14 @@ public class Radar {
 	*/
 	/* z100_0 : Повернуть радар влево */
 	public void z100_0_turnLeft() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z100_0", "Повернуть радар влево");
-		}
 		_deltaAngle = -1000;
 	}
 	/** z100_1 : Повернуть радар вправо */
 	public void z100_1_turnRight() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z100_1", "Повернуть радар вправо");
-		}
 		_deltaAngle = 1000;
 	}
 	/** z101_0 : Сбросить память пройденного радаром пути */
 	public void z101_0_resetState() {
-		if (Constants.OUTPUTS_LOGGING) {
-			Logger.logOutput("z101_0", "Сбросить память пройденного радаром пути");
-		}
 		_radarPath = 0;
 	}
 }

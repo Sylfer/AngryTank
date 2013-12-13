@@ -203,10 +203,6 @@ public GeomVektor calculateAveragePrediction(double aBulletSpeed, double aPredic
 }
 /** Вывести статистику */
 public void logStatisitics() {
-	Logger.log("---- Статистика для " + _name + " ----");
-	Logger.log("Выстрелов: " + _shots + ", попаданий: " + _hits);
-	Logger.log("Вероятность: " + _hits / _shots + ", базовая: " + _baseProbability);
-	Logger.log("---------");
 }
 /*
 Реализация входных переменных
@@ -214,9 +210,6 @@ public void logStatisitics() {
 /** x1000 : Информация о цели устарела*/
 public boolean x1000_targetDataIsOutOfDate() {
 	boolean result = (_AngryTankJr._currentTime - _lastUpdateTime) > ROUNDS_TO_MAKE_INFO_INVALID;
-	if (Constants.INPUTS_LOGGING) {
-		Logger.logInput("x1000", "Информация о цели устарела", result);
-	}
 	return result;
 }
 /*
@@ -224,9 +217,6 @@ public boolean x1000_targetDataIsOutOfDate() {
 */
 /** z1000 : Сбросить параметры цели*/
 public void z1000_resetTargetData() {
-	if (Constants.OUTPUTS_LOGGING) {
-		Logger.logOutput("z1000", "Сбросить параметры цели");
-	}
 	_averageAngularVelocity = 0;
 	_angularVelocity = 0;
 	_averageVelocity = _velocity = 0;
@@ -235,9 +225,6 @@ public void z1000_resetTargetData() {
 }
 /** z1001 : Обновить параметры цели*/
 public void z1001_updateTargetData(Event event) {
-	if (Constants.OUTPUTS_LOGGING) {
-		Logger.logOutput("z1001", "Обновить параметры цели");
-	}
 	if (_lastUpdateTime != _AngryTankJr._currentTime) // Защита от двойного вызова на одном шаге
 	{
 		ScannedRobotEvent e = (ScannedRobotEvent) event;
@@ -256,9 +243,6 @@ public void z1001_updateTargetData(Event event) {
 }
 /** z1010 : Обновить статистику попаданий в цель*/
 public void z1010_updateTargetHitStatistics(Event e) {
-	if (Constants.OUTPUTS_LOGGING) {
-		Logger.logOutput("z1010", "Обновить статистику попаданий в цель");
-	}
 	double P = INITILAL_PROBABILITY - _Taverage * (INITILAL_PROBABILITY - _baseProbability) / _Tbase;
 	P = P * 1.4;
 	P = Math.min(P,INITILAL_PROBABILITY);

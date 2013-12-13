@@ -38,29 +38,16 @@ public abstract class RadarState {
 	* Протоколирование для объекта -- начало протоколирования
 	*/
 	private static void doStartLogging(int aEvent, Radar aRadar) {
-		if (Constants.OBJECTS_LOGGING) {
-			Logger.log("Для объекта 'Радар':");
-		}
-		if (Constants.A4_BEGIN_LOGGING) {
-			Logger.logBegin(Constants.RADAR_AUTOMATE_NAME, aRadar.getCurrentState().getName(), aEvent);
-		}
 	}
 	/**
 	* Протоколирование для объекта -- конец протоколирования
 	*/
 	private static void doEndLogging(int aEvent, Radar aRadar) {
-		if (Constants.A4_END_LOGGING) {
-			Logger.logEnd(Constants.RADAR_AUTOMATE_NAME, aRadar.getCurrentState().getName());
-		}
 	}
 	/**
 	* Смена состояния автомата, управляющего объектом
 	*/
 	private static void changeState(RadarState aNewState, Radar aRadar) {
-		if (Constants.A4_TRANS_LOGGING) {
-			Logger.logStateChange(Constants.RADAR_AUTOMATE_NAME, aNewState.getName(),
-				aRadar.getCurrentState().getName());
-		}
 		aRadar.setCurrentState(aNewState);
 		aNewState.onEnter(aRadar);
 	}
